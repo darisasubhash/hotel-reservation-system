@@ -14,4 +14,16 @@ public class HotelReservationService {
     public List<Hotel> getHotels(){
         return hotelList;
     }
+    public Hotel findCheapestHotel(int days){
+        Hotel cheapestHotel = null;
+        int minTotalRate = Integer.MAX_VALUE;
+        for(Hotel hotel : hotelList){
+            int totalRate = hotel.getWeekdayRate()*days;
+            if(totalRate<minTotalRate){
+                minTotalRate=totalRate;
+                cheapestHotel = hotel;
+            }
+        }
+        return cheapestHotel;
+    }
 }
