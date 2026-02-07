@@ -47,5 +47,13 @@ public class HotelReservationTest {
         Assert.assertEquals("Lakewood", cheapestHotels.get(0).getName());
         Assert.assertEquals("Bridgewood", cheapestHotels.get(1).getName());
     }
-
+    //UC-5 add hotel with rating
+    @Test
+    public void givenHotel_WhenAdded_ShouldStoreRating() {
+        HotelReservationService service = new HotelReservationService();
+        service.addHotel("Lakewood", 110, 90, 3);
+        Hotel hotel = service.getHotels().get(0);
+        Assert.assertEquals("Lakewood", hotel.getName());
+        Assert.assertEquals(3, hotel.getRating());
+    }
 }

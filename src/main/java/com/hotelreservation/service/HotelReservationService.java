@@ -9,8 +9,12 @@ import java.util.List;
 public class HotelReservationService {
     List<Hotel> hotelList=new ArrayList<>();
     public void addHotel(String name,int weekdayRate,int weekendRate){
-        Hotel hotel=new Hotel(name,weekdayRate,weekendRate);
+        Hotel hotel=new Hotel(name,weekdayRate,weekendRate,0);
         hotelList.add(hotel);
+    }
+    //Add hotel with rating
+    public void addHotel(String name, int weekdayRate, int weekendRate, int rating) {
+        hotelList.add(new Hotel(name, weekdayRate, weekendRate, rating));
     }
     public List<Hotel> getHotels(){
         return hotelList;
