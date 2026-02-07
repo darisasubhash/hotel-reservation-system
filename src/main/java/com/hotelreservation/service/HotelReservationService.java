@@ -1,6 +1,7 @@
 package com.hotelreservation.service;
 
 import com.hotelreservation.model.Hotel;
+import com.hotelreservation.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,26 @@ public class HotelReservationService {
             int totalRate = hotel.getWeekdayRate()*days;
             if(totalRate<minTotalRate){
                 minTotalRate=totalRate;
+                cheapestHotel = hotel;
+            }
+        }
+        return cheapestHotel;
+    }
+    public Hotel findCheapestHotel(String[] dates){
+        Hotel cheapestHotel = null;
+        int minTotalRate = Integer.MAX_VALUE;
+        for(Hotel hotel : hotelList){
+            int totalRate = 0;
+            for(String date :dates){
+                if(DateUtil.isWeekend(date)){
+                    totalRate += hotel.getWeekendRate();
+                }
+                else {
+                    totalRate +=hotel.getWeekdayRate();
+                }
+            }
+            if(totalRate < minTotalRate){
+                minTotalRate = totalRate;
                 cheapestHotel = hotel;
             }
         }

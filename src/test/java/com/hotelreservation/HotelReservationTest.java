@@ -22,5 +22,15 @@ public class HotelReservationTest {
         Hotel cheapestHotel=service.findCheapestHotel(2);
         Assert.assertEquals("Lakewood",cheapestHotel.getName());
     }
+    //UC-3 ability to add weekday and weekend
+    @Test
+    public void givenHotelWhenAddedStoreWeekdayAndWeekendRates() {
+        HotelReservationService service = new HotelReservationService();
+        service.addHotel("Lakewood", 110, 90);
+        Hotel hotel = service.getHotels().get(0);
+        Assert.assertEquals("Lakewood", hotel.getName());
+        Assert.assertEquals(110, hotel.getWeekdayRate());
+        Assert.assertEquals(90, hotel.getWeekendRate());
+    }
 
 }
