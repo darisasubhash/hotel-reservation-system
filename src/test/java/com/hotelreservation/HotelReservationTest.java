@@ -4,6 +4,8 @@ import com.hotelreservation.service.HotelReservationService;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 public class HotelReservationTest {
     //UC-1 Add Hotel
     @Test
@@ -31,6 +33,19 @@ public class HotelReservationTest {
         Assert.assertEquals("Lakewood", hotel.getName());
         Assert.assertEquals(110, hotel.getWeekdayRate());
         Assert.assertEquals(90, hotel.getWeekendRate());
+    }
+    //UC-4 find the cheapest hotel based on weekday and weekend
+    @Test
+    public void givenDatesReturnCheapestOnWeekdayAndWeekend(){
+        HotelReservationService service = new HotelReservationService();
+        service.addHotel("Lakewood", 110, 90);
+        service.addHotel("Bridgewood", 150, 50);
+        service.addHotel("Ridgewood", 220, 150);
+        String[] dates ={"11Sep2020","12Sep2020"};
+        List<Hotel> cheapestHotels = service.findCheapestHotelByDates(dates);
+        Assert.assertEquals(2,cheapestHotels.size());
+        Assert.assertEquals("Lakewood", cheapestHotels.get(0).getName());
+        Assert.assertEquals("Bridgewood", cheapestHotels.get(1).getName());
     }
 
 }

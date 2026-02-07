@@ -27,8 +27,8 @@ public class HotelReservationService {
         }
         return cheapestHotel;
     }
-    public Hotel findCheapestHotel(String[] dates){
-        Hotel cheapestHotel = null;
+    public List<Hotel> findCheapestHotelByDates(String[] dates){
+        List<Hotel> cheapestHotels = new ArrayList<>();
         int minTotalRate = Integer.MAX_VALUE;
         for(Hotel hotel : hotelList){
             int totalRate = 0;
@@ -42,9 +42,12 @@ public class HotelReservationService {
             }
             if(totalRate < minTotalRate){
                 minTotalRate = totalRate;
-                cheapestHotel = hotel;
+                cheapestHotels.clear();
+                cheapestHotels.add(hotel);
+            } else if (totalRate == minTotalRate) {
+                cheapestHotels.add(hotel);
             }
         }
-        return cheapestHotel;
+        return cheapestHotels;
     }
 }
