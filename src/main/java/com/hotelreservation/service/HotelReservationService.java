@@ -1,0 +1,17 @@
+package com.hotelreservation.service;
+
+import com.hotelreservation.model.Hotel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class HotelReservationService {
+    List<Hotel> hotelList=new ArrayList<>();
+    public void addHotel(String name,int weekdayRate,int weekendRate){
+        Hotel hotel=new Hotel(name,weekdayRate,weekendRate);
+        hotelList.add(hotel);
+    }
+    public List<Hotel> getHotels(){
+        return hotelList;
+    }
+}
