@@ -54,4 +54,46 @@ public class HotelReservationService {
         }
         return cheapestHotels;
     }
+    //findin gcheapest hotel with best rating
+    public Hotel findCheapestBestHotel(String[] dates){
+        List<Hotel> cheapestHotels=new ArrayList<>();
+        int minTotalRate=Integer.MAX_VALUE;
+        for(Hotel hotel:hotelList){
+            int totalRate=0;
+            for (String date : dates){
+                if(DateUtil.isWeekend(date)){
+                    totalRate+= hotel.getWeekendRate();
+                }
+                else {
+                    totalRate+=hotel.getWeekdayRate();
+                }
+            }
+            if(totalRate<minTotalRate){
+                minTotalRate=totalRate;
+                cheapestHotels.clear();
+                cheapestHotels.add(hotel);
+            } else if (totalRate == minTotalRate) {
+                cheapestHotels.add(hotel);
+            }
+        }
+        Hotel bestRatedHotel=cheapestHotels.get(0);
+        for (Hotel hotel : cheapestHotels){
+            if(hotel.getRating() > bestRatedHotel.getRating()){
+                bestRatedHotel =hotel;
+            }
+        }
+        return bestRatedHotel;
+    }
+
+    public int calculateTotalRate(Hotel hotel, String[] dates) {
+        int total = 0;
+        for (String date : dates) {
+            if (DateUtil.isWeekend(date)) {
+                total += hotel.getWeekendRate();
+            } else {
+                total += hotel.getWeekdayRate();
+            }
+        }
+        return total;
+    }
 }

@@ -56,4 +56,23 @@ public class HotelReservationTest {
         Assert.assertEquals("Lakewood", hotel.getName());
         Assert.assertEquals(3, hotel.getRating());
     }
+    //Uc-6 finding cheapest hotel with best rating
+    @Test
+    public void givenDates_ShouldReturnCheapestBestRatedHotel() {
+
+        HotelReservationService service = new HotelReservationService();
+
+        service.addHotel("Lakewood", 110, 90, 3);
+        service.addHotel("Bridgewood", 150, 50, 4);
+        service.addHotel("Ridgewood", 220, 150, 5);
+
+        String[] dates = {"11Sep2020", "12Sep2020"}; // Fri + Sat
+
+        Hotel hotel = service.findCheapestBestHotel(dates);
+        int totalRate = service.calculateTotalRate(hotel, dates);
+
+        Assert.assertEquals("Bridgewood", hotel.getName());
+        Assert.assertEquals(4, hotel.getRating());
+        Assert.assertEquals(200, totalRate);
+    }
 }
