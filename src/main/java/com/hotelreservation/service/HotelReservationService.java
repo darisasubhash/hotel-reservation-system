@@ -109,4 +109,8 @@ public class HotelReservationService {
         }
         return bestHotel;
     }
+    //adding reward customer rates
+    public void addHotel(String name, int weekdayRate, int weekendRate, int rewardWeekdayRate, int rewardWeekendRate,int rating) {
+        hotelList.add(new Hotel(name, weekdayRate, weekendRate, rewardWeekdayRate, rewardWeekendRate, rating));
+    }
 }

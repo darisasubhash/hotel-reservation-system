@@ -88,4 +88,14 @@ public class HotelReservationTest {
         Assert.assertEquals("Ridgewood",hotel.getName());
         Assert.assertEquals(370,totalRate);
     }
+    @Test
+    public void givenHotelsWhenRewardRatesAddedStoreCorrectly() {
+        HotelReservationService service = new HotelReservationService();
+        service.addHotel("Lakewood", 110, 90, 80, 80, 3);
+        service.addHotel("Bridgewood", 150, 50, 110, 50, 4);
+        service.addHotel("Ridgewood", 220, 150, 100, 40, 5);
+        Hotel lakewood = service.getHotels().get(0);
+        Assert.assertEquals(80, lakewood.getRewardWeekdayRate());
+        Assert.assertEquals(80, lakewood.getRewardWeekendRate());
+    }
 }
