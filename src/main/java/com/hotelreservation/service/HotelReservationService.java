@@ -1,5 +1,6 @@
 package com.hotelreservation.service;
 
+import com.hotelreservation.HotelReservation;
 import com.hotelreservation.model.Hotel;
 import com.hotelreservation.util.DateUtil;
 
@@ -95,5 +96,17 @@ public class HotelReservationService {
             }
         }
         return total;
+    }
+
+    public Hotel bestRatedHotel(String[] dates){
+        Hotel bestHotel=null;
+        int bestRated=Integer.MIN_VALUE;
+        for(Hotel hotel :hotelList){
+            if(hotel.getRating()>bestRated){
+                bestHotel=hotel;
+                bestRated=hotel.getRating();
+            }
+        }
+        return bestHotel;
     }
 }
