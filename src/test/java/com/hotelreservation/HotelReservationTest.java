@@ -1,4 +1,5 @@
 package com.hotelreservation;
+import com.hotelreservation.exception.HotelReservationException;
 import com.hotelreservation.model.Hotel;
 import com.hotelreservation.service.HotelReservationService;
 import org.junit.Assert;
@@ -69,7 +70,7 @@ public class HotelReservationTest {
         String[] dates = {"11Sep2020", "12Sep2020"};
 
         Hotel hotel = service.findCheapestBestHotel(dates);
-        int totalRate = service.calculateTotalRate(hotel, dates);
+        int totalRate = service.calculateTotalRate(hotel, dates, false);
 
         Assert.assertEquals("Bridgewood", hotel.getName());
         Assert.assertEquals(4, hotel.getRating());
@@ -84,10 +85,11 @@ public class HotelReservationTest {
         service.addHotel("Ridgewood", 220, 150, 5);
         String[] dates = {"11Sep2020", "12Sep2020"};
         Hotel hotel=service.bestRatedHotel(dates);
-        int totalRate=service.calculateTotalRate(hotel,dates);
+        int totalRate=service.calculateTotalRate(hotel, dates, false);
         Assert.assertEquals("Ridgewood",hotel.getName());
         Assert.assertEquals(370,totalRate);
     }
+    //UC-8 adding the reward customer prices
     @Test
     public void givenHotelsWhenRewardRatesAddedStoreCorrectly() {
         HotelReservationService service = new HotelReservationService();
@@ -98,4 +100,24 @@ public class HotelReservationTest {
         Assert.assertEquals(80, lakewood.getRewardWeekdayRate());
         Assert.assertEquals(80, lakewood.getRewardWeekendRate());
     }
+    //UC-9 Cheapest best rated hotel for reward customers
+    @Test
+    public void givenDatesForRewardCustomerReturnCheapestBestRatedHotel() {
+        HotelReservationService service = new HotelReservationService();
+        service.addHotel("Lakewood", 110, 90, 80, 80, 3);
+        service.addHotel("Bridgewood", 150, 50, 110, 50, 4);
+        service.addHotel("Ridgewood", 220, 150, 100, 40, 5);
+        String[] dates = {"11Sep2020", "12Sep2020"};
+        Hotel hotel = service.findCheapestBestHotelForCustomer("Reward", dates);
+        Assert.assertEquals("Ridgewood", hotel.getName());
+        Assert.assertEquals(5, hotel.getRating());
+    }
+    //for exception
+    @Test(expected = HotelReservationException.class)
+    public void givenInvalidCustomerTypeThrowException() {
+        HotelReservationService service = new HotelReservationService();
+        String[] dates = {"11Sep2020", "12Sep2020"};
+        service.findCheapestBestHotelForCustomer("VIP", dates);
+    }
+
 }
