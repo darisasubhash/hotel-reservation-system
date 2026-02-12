@@ -119,5 +119,15 @@ public class HotelReservationTest {
         String[] dates = {"11Sep2020", "12Sep2020"};
         service.findCheapestBestHotelForCustomer("VIP", dates);
     }
-
+    //UC-10 using streams to find cheapest best rated hotel for reward customers
+    @Test
+    public void givenDatesForRewardCustomerReturnCheapestBestRatedHotelUsingStreams() {
+        HotelReservationService service = new HotelReservationService();
+        service.addHotel("Lakewood", 110, 90, 80, 80, 3);
+        service.addHotel("Bridgewood", 150, 50, 110, 50, 4);
+        service.addHotel("Ridgewood", 220, 150, 100, 40, 5);
+        String[] dates = {"11Sep2020", "12Sep2020"};
+        Hotel hotel = service.findCheapestBestHotelUsingStreams("Reward", dates);
+        Assert.assertEquals("Ridgewood", hotel.getName());
+    }
 }

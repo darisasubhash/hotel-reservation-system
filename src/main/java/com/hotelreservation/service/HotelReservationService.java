@@ -56,7 +56,7 @@ public class HotelReservationService {
         }
         return cheapestHotels;
     }
-    //findin gcheapest hotel with best rating
+    //finding the cheapest hotel with best rating
     public Hotel findCheapestBestHotel(String[] dates){
         List<Hotel> cheapestHotels=new ArrayList<>();
         int minTotalRate=Integer.MAX_VALUE;
@@ -115,8 +115,10 @@ public class HotelReservationService {
         hotelList.add(new Hotel(name, weekdayRate, weekendRate, rewardWeekdayRate, rewardWeekendRate, rating));
     }
     //UC-9 calculate cheapest best rated hotel for reward customer
+    private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])[A-Z][a-z]{2}[0-9]{4}$";
+    private static final String CUSTOMER_PATTERN = "^(Regular|Reward)$";
     private void validateInput(String customerType, String[] dates) {
-        if (!(customerType.equalsIgnoreCase("Regular") ||
+        if (!(customerType.matches(CUSTOMER_PATTERN) ||
                 customerType.equalsIgnoreCase("Reward"))) {
             throw new HotelReservationException("Invalid Customer Type");
         }
@@ -124,6 +126,9 @@ public class HotelReservationService {
             throw new HotelReservationException("Date Range Cannot Be Empty");
         }
         for (String date : dates) {
+            if(!date.matches(DATE_PATTERN)){
+                throw new HotelReservationException("Invalid Dat Format");
+            }
             try {
                 DateUtil.isWeekend(date);
             } catch (Exception e) {
@@ -169,6 +174,20 @@ public class HotelReservationService {
         }
         return bestRatedHotel;
     }
+    //UC-10 Finding the cheapest best hotel for customer using streams
+    public Hotel findCheapestBestHotelUsingStreams(String customerType, String[] dates) {
+        validateInput(customerType, dates);
+        return hotelList.stream()
+                .sorted((h1, h2) -> {
+                    int total1 = calculateTotalRate(h1, dates, customerType.equalsIgnoreCase("Reward"));
+                    int total2 = calculateTotalRate(h2, dates, customerType.equalsIgnoreCase("Reward"));
+                    if (total1 != total2) return Integer.compare(total1, total2);
+                    return Integer.compare(h2.getRating(), h1.getRating());})
+                .findFirst()
+                .orElseThrow(() -> new HotelReservationException("No Hotels Available"));
+    }
+
+
 
 
 }
